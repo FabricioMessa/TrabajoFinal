@@ -73,9 +73,9 @@ int main(){
 
     if (answer == 'A')
     {
-        productos(answer);
+        productos(answer); // Opción positiva
     }
-    if (answer == 'B')
+    if (answer == 'B') // Opción negativa
     {
        system("pause");
     }  
@@ -85,7 +85,7 @@ int main(){
 
 }
 
-void productos(char answer){
+void productos(char answer){ // Esta función se va a encargar de mostrar las opciones de los productos a tomar
     int opcion_productos;
     if (answer == 'A')
     {   
@@ -104,7 +104,7 @@ void productos(char answer){
     }
 }
 
-void opciones(int opcion_productos){
+void opciones(int opcion_productos){ // Esta función  va a darnos a conocer que producto va a querer el usuario con mas enfasis y cuantos.
     int verduras;
     int cantidad_producto;
 
@@ -132,7 +132,7 @@ void opciones(int opcion_productos){
     std::cout << opcion_productos;
 }
 
-void carrito(int verduras, int cantidad_producto){
+void carrito(int verduras, int cantidad_producto){ // En esta función vamos a mostrar la cantidad de productos que eligio y si va a realizar otra operación o pasar a la caja final.
     char decision;
     char answer = 'A';
     switch (verduras){
