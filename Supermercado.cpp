@@ -1,288 +1,839 @@
-//GRUPO 5
-//- Victor Alejandro Calvo Guzmán
-//- Tonny Nerso Cayo Villena
-//- Fabricio Arian Messa Mandujano
-
 #include <iostream>
-
-void welcome(){   //esta funion es para la interfaz del principio
-
-    char ingresar;
-
-    std::cout << "====================================================================\n";
-    std::cout << "====================================================================\n";
-    std::cout << "||||  :::   :::  :::   ::::  ::    ::::  ::::::  ::   ::  ::::  ||||\n";
-    std::cout << "||||   :::  :::  :::   ::--  ::    ::    ::  ::  :: V ::  ::--  ||||\n";
-    std::cout << "||||     :::   :::     ::::  ::::  ::::  ::::::  ::   ::  ::::  ||||\n";
-    std::cout << "====================================================================\n";
-    std::cout << "====================================================================\n";
-
-}
-
-class Cliente //creamos la clase cliente
+#include <fstream>
+using namespace std;
+//=====================================================================================================================================================================
+class Cliente 
 {
 private:
-    std::string name;     //estos dos son para guardar el nombre y apellido del cliente
-    std::string surname;
+    string name;    
+    string surname;
 public:
-    Cliente(std::string, std::string);
+    Cliente(string, string);
     void comprarplus();
-    void comprarless();
 };
 
-Cliente::Cliente(std::string _name, std::string _surname)
+Cliente::Cliente(string _name, string _surname)
 {
     name = _name;
     surname = _surname;
 }
 
-void Cliente::comprarplus()  //en esta funcion colocamos que el cliente se ha registrado
+void Cliente::comprarplus()  
 {
     std::cout << "Cliente: " << name << " " << surname << ". \n";
 }
-
-void productos(char);    //colocamos las funciones que creamos
+//=======================================================================================================================================================================
+void welcome();
 void opciones(int);
-void carrito(int, int);
-
+void productos(char);
+void cajafinal(int);
+void carrito_verduras(int, int);
+void carrito_carnes(int, int);
+void carrito_frutas(int, int);
+void carrito_pescados(int, int);
+void carrito_dulces(int, int);
+void carrito_juguetes(int, int);
+//========================================================================================================================================================================
 int main(){
 
-    for (int i = 0; i < 20; i++)   //en esta parte de aqui son las veces que limpiara la ventana donde saldrá el mensaje de W E L C O M E, en el siguiente avance lo mejoraremos
+    for (int i = 0; i < 50; i++) 
     {
         welcome();
         system("cls");
     }
 
-    std::string nombre;
-    std::string apellido;
-    char respuesta0;
-    char answer;
-    //int pasillo;
-    //int verduras;
-    //char verdura[100];
-    //char respuesta;
+    string nombre;
+    string apellido;
 
-    std::cout << "Escriba su nombre: ";    //decimos que ingrese sus nombres y apellidos
-    std::cin >> nombre;
-    std::cout << "Escriba su apellido: ";
-    std::cin >> apellido;
+    char primera_Respuesta;
 
-    Cliente c1 = Cliente(nombre, apellido); //lo ponemos en un objeto cliente
+    cout << "Escriba su nombre: "; 
+    cin >> nombre;   
+    cout << "Escriba su apellido: ";
+    cin >> apellido;
 
+    Cliente c1 = Cliente(nombre, apellido); 
     c1.comprarplus();
+    cout << "\n";
 
-    std::cout << "\n";
-
-    std::cout << "Buenos dias, viene a comprar algo? \n A. Buenos dias, si, vengo a comprar unas cosas para la semana.\n B. No, me equivoque de tienda, aios.: ";
-    std::cin >> answer;
-
-    if (answer == 'A')
+    do
     {
-        productos(answer); // Opción positiva
+        cout << "Buenas, viene a comprar algo? (A.Si / B.No): ";
+        cin >> primera_Respuesta;
+    } while ((primera_Respuesta != 'A') && (primera_Respuesta != 'B'));
+
+    if (primera_Respuesta == 'A')
+    {
+        productos(primera_Respuesta);
     }
-    if (answer == 'B') // Opción negativa
+
+    if (primera_Respuesta == 'B')
     {
-       system("pause");
-    }  
+        cout << "Gracias, que tenga un buen dia.\n";
+    }
 
     system("pause");
     return 0;
-
 }
 
-void productos(char answer){ // Esta función se va a encargar de mostrar las opciones de los productos a tomar
+//==================================================================================================================================================================================
+void welcome(){
+
+    cout << "\t===============================================================================================================\n";
+    cout << "\t===============================================================================================================\n";
+    cout << "\t||    _ __   __ __   __ __    __ __ __    __          __ __ __    __ __ __    __ __  __ _  __    __ __ __    ||\n";
+    cout << "\t||   |    | |     | |     |  |        |  |  |        |        |  |        |  |     |/    |/  |  |        |   ||\n";
+    cout << "\t||   |/|  | |/|   | |/|   |  |  |-----   |  |        |  |--|__|  |  |--|  |  |    _     _    |  |  |-----    ||\n";
+    cout << "\t||     |  |   |   |   |   |  |  |__ __   |  |        |  |        |  |  |  |  |   / |   / |   |  |  |__ __    ||\n";
+    cout << "\t||    /  /   /   /   /   /   |        |  |  |        |  |        |  |  |  |  |   | |   | |   |  |        |   ||\n";
+    cout << "\t||   /  /   /   /   /   /    |  |-----   |  |        |  |        |  |  |  |  |   | |   | |   |  |  |-----    ||\n";
+    cout << "\t||  |   |__/    |__/   /     |  |__ __   |  |__ __   |  |__|--|  |  |  |  |  |   | |   | |   |  |  |__ __    ||\n";
+    cout << "\t||  |                  |     |        |  |        |  |        |  |   --   |  |   | |   | |   |  |        |   ||\n";
+    cout << "\t||   ------------------       --------    --------    ........    --------    ---   ---   ---    --------    ||\n";
+    cout << "\t===============================================================================================================\n";
+    cout << "\t===============================================================================================================\n";
+    cout << "\n";
+}
+//==================================================================================================================================================================================
+void productos(char La_Primera_Respuesta){
     int opcion_productos;
-    if (answer == 'A')
+    if(La_Primera_Respuesta == 'A')
     {   
-        std::cout << "==TENEMOS LOS SIGUIENTES PRODUCTOS DISPONIBLES==\n";
-        std::cout << "|||||||||||||\n";      
-        std::cout << "1. Verduras\n2. Carnes\n3. Frutas\n4. Pescado\n5. Dulces\n6. Juguetes";
-        std::cout << "\n|||||||||||||\n";
-        std::cout << "Que producto desea?: ";
-        std::cin >> opcion_productos;
+        cout << "==TENEMOS LOS SIGUIENTES PRODUCTOS DISPONIBLES==\n";
+        cout << "==PARA SELECCIONAR CUALQUIER PRODUCTO COLOQUE EL NUMERO DE DICHO PRODUCTO==";
+        cout << "\n|||||||||||||\n";      
+        cout << "1. Verduras\n2. Carnes\n3. Frutas\n4. Pescado\n5. Dulces\n6. Juguetes";
+        cout << "\n|||||||||||||\n";
+        cout << "Que producto desea?: ";
+        cin >> opcion_productos;
         opciones(opcion_productos);
     }
-    else if(answer == 'B')
-    {
-        std::cout << "Gracias, que tenga un buen dia.\n";
-        system("pause");
-    }
 }
-
-void opciones(int opcion_productos){ // Esta función  va a darnos a conocer que producto va a querer el usuario con mas enfasis y cuantos.
-    int verduras;
+//==================================================================================================================================================================================
+void opciones(int La_opcion_productos){
+    int verduras, dulces, pescado, juguete, carne, fruta;
     int cantidad_producto;
-    int carne;
-    int cantidad_producto2;
-    int fruta;
-    int cantidad_producto3;
-    int pescado;
-    int cantidad_producto4;
-    int dulces;
-    int cantidad_producto5;
-    int juguetes;
-    int cantidad_producto6;
 
-    std::cout << "==ESTE ES NUESTRO STOCK==\n";
+    cout << "==ESTE ES NUESTRO STOCK==\n";
 
-    switch(opcion_productos){
+    switch(La_opcion_productos){
             case 1:
-            std::cout << "Bienvenido al pasillo de Verduras!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Tomate(Numero de Tomate)\n2. Lechuga(Numero de Lechuga)\n3. Col(Numero de Col)\n4. Papa(Numero de Papa)\n5. Camote(Numero de Camote)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que verdura desea?: ";
-            std::cin >> verduras;
-            std::cout <<"Cuantas desea:? ";
-            std::cin >> cantidad_producto;
-            carrito(verduras,cantidad_producto);
+            cout << "==Bienvenido al pasillo de Verduras!==\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Tomate\n2.- Lechuga\n3.- Col\n4.- Papa\n5.- Camote";
+            cout << "\n|||||||||||||\n";
+            cout << "Que verdura desea?: ";
+            cin >> verduras;
+            cout <<"Cuantas desea:? ";
+            cin >> cantidad_producto;
+            carrito_verduras(verduras,cantidad_producto);
+            break;
             case 2:
-            std::cout << "Bienvenido al pasillo de Carnes!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Lomo(Numero de Lomo)\n2. Pechuga(Numero de Pechuga)\n3. Pierna(Numero de Pierna)\n4. Chorizo(Numero de Chorizo)\n5. Entre-pierna(Numero de Entre-piernas)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que carne desea?: ";
-            std::cin >> carne;
-            std::cout <<"Cuantas desea:? ";
-            std::cin >> cantidad_producto2;
-            carrito(carne,cantidad_producto2);
+            cout << "Bienvenido al pasillo de Carnes!\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Lomo\n2.- Pechuga\n3.- Pierna\n4.- Chorizo\n5.- Entre-pierna";
+            cout << "\n|||||||||||||\n";
+            cout << "Que carne desea?: ";
+            cin >> carne;
+            cout <<"Cuantas desea:? ";
+            cin >> cantidad_producto;
+            carrito_carnes(carne,cantidad_producto);
+            break;
             case 3:
-            std::cout << "Bienvenido al pasillo de Frutas!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Piña(Numero de Piña)\n2. Manzana(Numero de Manzana)\n3. Platano(Numero de Platano)\n4. Pera(Numero de Pera)\n5. Sandia(Numero de Sandia)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que fruta desea?: ";
-            std::cin >> fruta;
-            std::cout <<"Cuantas desea:? ";
-            std::cin >> cantidad_producto3;
-            carrito(fruta,cantidad_producto3);
+            cout << "Bienvenido al pasillo de Frutas!\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Pinha\n2.- Manzana\n3.- Platano\n4.- Pera\n5.- Sandia";
+            cout << "\n|||||||||||||\n";
+            cout << "Que fruta desea?: ";
+            cin >> fruta;
+            cout <<"Cuantas desea:? ";
+            cin >> cantidad_producto;
+            carrito_frutas(fruta,cantidad_producto);
+            break;
             case 4:
-            std::cout << "Bienvenido al pasillo de Pescado!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Pejerrey(Numero de Pejerrey)\n2. Atun(Numero de Atun)\n3. Lenguado(Numero de Lenguado)\n4. Trucha(Numero de Trucha)\n5. Caballa(Numero de Caballa)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que pescado desea?: ";
-            std::cin >> pescado;
-            std::cout <<"Cuantas desea:? ";
-            std::cin >> cantidad_producto4;
-            carrito(pescado,cantidad_producto4);
+            cout << "Bienvenido al pasillo de Pescados!\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Bonito\n2.- Furel\n3.- Camaron\n4.- Anchobeta\n5.- Pez globo";
+            cout << "\n|||||||||||||\n";
+            cout << "Que pescado desea?: ";
+            cin >> pescado;
+            cout <<"Cuantas desea:? ";
+            cin >> cantidad_producto;
+            carrito_pescados(pescado,cantidad_producto);
+            break;
             case 5:
-            std::cout << "Bienvenido al pasillo de Dulces!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Galleta Oreo(Numero de Galleta Oreo)\n2. Caramelos de Limón(Numero de Caramelos de Limón)\n3. Coca Cola(Numero de Coca Cola)\n4. Frunas(Numero de Frunas)\n5. Margaritas(Numero de Margaritas)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que dulce desea?: ";
-            std::cin >> dulces;
-            std::cout <<"Cuantos desea:? ";
-            std::cin >> cantidad_producto5;
-            carrito(dulces,cantidad_producto5);
+            cout << "Bienvenido al pasillo de Dulces!\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Galleta Oreo\n2.- Caramelos de Limón\n3.- Coca Cola\n4.- Frunas\n5.- Margaritas";
+            cout << "\n|||||||||||||\n";
+            cout << "Que dulce desea?: ";
+            cin >> dulces;
+            cout <<"Cuantos desea:? ";
+            cin >> cantidad_producto;
+            carrito_dulces(dulces,cantidad_producto);
+            break;
             case 6:
-            std::cout << "Bienvenido al pasillo de Juguetes!\n";
-            std::cout << "|||||||||||||\n";
-            std::cout << "1. Max Steal(Numero de Max Steal)\n2. Barby(Numero de Barby)\n3. Camion de carga(Numero de Camion de carga)\n4. Pista de carreras(Numero de Pista de carreras)\n5. Ajedrez(Numero de Ajedrez)\n";
-            std::cout << "\n|||||||||||||\n";
-            std::cout << "Que juguete desea?: ";
-            std::cin >> juguetes;
-            std::cout <<"Cuantos desea:? ";
-            std::cin >> cantidad_producto6;
-            carrito(juguetes,cantidad_producto6);
-            default:
-                break;
+            cout << "Bienvenido al pasillo de Juguetes!\n";
+            cout << "|||||||||||||\n";
+            cout << "1.- Max Steal\n2.- Barby\n3.- Camion de carga\n4.- Pista de carreras\n5.- Ajedrez";
+            cout << "\n|||||||||||||\n";
+            cout << "Que juguete desea?: ";
+            cin >> juguete;
+            cout <<"Cuantos desea:? ";
+            cin >> cantidad_producto;
+            carrito_juguetes(juguete,cantidad_producto);
+            break;
     }
-    std::cout << opcion_productos;
 }
+//==================================================================================================================================================================================
+void caja_final(float precio){
+    cout << "\n";
+    ofstream boleta;
+    boleta.open("Boleta.txt");
+    boleta << "El precio final a pagar es de " << precio << "s/. Que tenga buen día.\n";
 
-void carrito_verduras(int verduras, int cantidad_producto){ // En esta función vamos a mostrar la cantidad de productos que eligio y si va a realizar otra operación o pasar a la caja final.
+}
+//==================================================================================================================================================================================
+void carrito_verduras(int verduras, int cantidad_producto){ 
     char decision;
     char answer = 'A';
     switch (verduras){
         case 1:
-            std::cout << "Eligio la cantidad " << cantidad_producto << " de Tomates || Su costo final de esta operacion es: " << cantidad_producto * 0.5  << ".\n";
-            std::cout << "\nSe adjunta para la suma final";
+            float preciofinaltomate;
+            preciofinaltomate = cantidad_producto * 0.40;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Tomates || Su costo final de esta operacion es: " << preciofinaltomate << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
             do
             {
-                std::cout << "\nDesea hacer otra operación?(S/N): ";
-                std::cin >> decision;
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
                 if (decision == 'S')
                 {
                     productos(answer);
                 }
                 else if(decision == 'N')
                 {
-                    std::cout<<"Pasa a caja final";
-                    void caja_final();
+                    cout<<"\nPasa a caja final";
+                    caja_final(preciofinaltomate);
                 }
             } while ((decision != 'S') && (decision != 'N'));
-            
+            break;
         case 2:
-            std::cout << "Eligio la cantidad " << cantidad_producto << " de Lechuga || Su costo final de esta operacion es: " << cantidad_producto * 1.5  << ".\n";
-            std::cout << "\nSe adjunta para la suma final";
+            float preciofinallechuga;
+            preciofinallechuga = cantidad_producto * 2.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Lechuga || Su costo final de esta operacion es: " << preciofinallechuga << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
             do
             {
-                std::cout << "\nDesea hacer otra operación?(S/N): ";
-                std::cin >> decision;
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
                 if (decision == 'S')
                 {
                     productos(answer);
                 }
                 else if(decision == 'N')
                 {
-                    std::cout<<"Pasa a caja final";
-                    void caja_final();
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinallechuga);
                 }
             } while ((decision != 'S') && (decision != 'N'));
+            break;
         case 3:
-            std::cout << "Eligio la cantidad " << cantidad_producto << " de Col || Su costo final de esta operacion es: " << cantidad_producto * 0.2  << ".\n";
-            std::cout << "\nSe adjunta para la suma final";
+            float preciofinalcol;
+            preciofinalcol = cantidad_producto * 2.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Col || Su costo final de esta operacion es: " << preciofinalcol << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
             do
             {
-                std::cout << "\nDesea hacer otra operación?(S/N): ";
-                std::cin >> decision;
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
                 if (decision == 'S')
                 {
                     productos(answer);
                 }
                 else if(decision == 'N')
                 {
-                    std::cout<<"Pasa a caja final";
-                    void caja_final();
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcol);
                 }
             } while ((decision != 'S') && (decision != 'N'));
+            break;
         case 4:
-            std::cout << "Eligio la cantidad " << cantidad_producto << " de Papa || Su costo final de esta operacion es: " << cantidad_producto * 0.2  << ".\n";
-            std::cout << "\nSe adjunta para la suma final";
+            float preciofinalpapa;
+            preciofinalpapa = cantidad_producto * 0.30;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Papa || Su costo final de esta operacion es: " << preciofinalpapa << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
             do
             {
-                std::cout << "\nDesea hacer otra operación?(S/N): ";
-                std::cin >> decision;
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
                 if (decision == 'S')
                 {
                     productos(answer);
                 }
                 else if(decision == 'N')
                 {
-                    std::cout<<"Pasa a caja final";
-                    void caja_final();
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpapa);
                 }
             } while ((decision != 'S') && (decision != 'N'));
+            break;
         case 5:
-            std::cout << "Eligio la cantidad " << cantidad_producto << " de Camote || Su costo final de esta operacion es: " << cantidad_producto * 0.2  << ".\n";
-            std::cout << "\nSe adjunta para la suma final";
+            float preciofinalcamote;
+            preciofinalcamote = cantidad_producto * 0.30;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Camote || Su costo final de esta operacion es: " << preciofinalcamote << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
             do
             {
-                std::cout << "\nDesea hacer otra operación?(S/N): ";
-                std::cin >> decision;
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
                 if (decision == 'S')
                 {
                     productos(answer);
                 }
                 else if(decision == 'N')
                 {
-                    std::cout<<"Pasa a caja final";
-                    void caja_final();
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcamote);
                 }
             } while ((decision != 'S') && (decision != 'N'));
-        default:
             break;
     }
 }
+//==================================================================================================================================================================================
+void carrito_carnes(int carne, int cantidad_producto){
+    char decision;
+    char answer = 'A';
+    switch (carne){
+        case 1:
+            float preciofinallomo;
+            preciofinallomo = cantidad_producto * 5.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Lomo || Su costo final de esta operacion es: " << preciofinallomo << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinallomo);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 2:
+            float preciofinalpechuga;
+            preciofinalpechuga = cantidad_producto * 4.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pechuga || Su costo final de esta operacion es: " << preciofinalpechuga << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpechuga);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 3:
+            float preciofinalpierna;
+            preciofinalpierna = cantidad_producto * 3.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pierna || Su costo final de esta operacion es: " << preciofinalpierna << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpierna);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 4:
+            float preciofinalchorizo;
+            preciofinalchorizo = cantidad_producto * 2.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Chorizo || Su costo final de esta operacion es: " << preciofinalchorizo << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalchorizo);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 5:
+            float preciofinalentre;
+            preciofinalentre = cantidad_producto * 1.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Entre-Pierna || Su costo final de esta operacion es: " << preciofinalentre << ".\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalentre);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+    }
+}
+//==================================================================================================================================================================================
+void carrito_frutas(int fruta, int cantidad_producto){ 
+    char decision;
+    char answer = 'A';
+    switch (fruta){
+        case 1:
+            float preciofinalpina;
+            preciofinalpina = cantidad_producto * 1.20;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pinha || Su costo final de esta operacion es: " << preciofinalpina << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpina);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 2:
+            float preciofinalmanzana;
+            preciofinalmanzana = cantidad_producto * 0.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Manzana || Su costo final de esta operacion es: " << preciofinalmanzana << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalmanzana);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 3:
+            float preciofinalplatano;
+            preciofinalplatano = cantidad_producto * 0.40;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Platano || Su costo final de esta operacion es: " << preciofinalplatano << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalplatano);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 4:
+            float preciofinalpera;
+            preciofinalpera = cantidad_producto * 0.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pera || Su costo final de esta operacion es: " << preciofinalpera << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpera);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 5:
+            float preciofinalsandia;
+            preciofinalsandia = cantidad_producto * 1.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Sandia || Su costo final de esta operacion es: " << preciofinalsandia << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalsandia);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+    }
+}
+//==================================================================================================================================================================================
+void carrito_pescados(int verduras, int cantidad_producto){ 
+    char decision;
+    char answer = 'A';
+    switch (verduras)
+    {
+        case 1:
+            float preciofinalbonito;
+            preciofinalbonito = cantidad_producto * 3.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Bonito || Su costo final de esta operacion es: " << preciofinalbonito << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalbonito);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 2:
+            float preciofinalfurel;
+            preciofinalfurel = cantidad_producto * 2.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Furel || Su costo final de esta operacion es: " << preciofinalfurel << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalfurel);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 3:
+            float preciofinalcamaron;
+            preciofinalcamaron = cantidad_producto * 2.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Camaron || Su costo final de esta operacion es: " << preciofinalcamaron << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcamaron);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 4:
+            float preciofinalanchoveta;
+            preciofinalanchoveta = cantidad_producto * 4.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Anchobeta || Su costo final de esta operacion es: " << preciofinalanchoveta << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalanchoveta);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 5:
+            float preciofinalglobo;
+            preciofinalglobo = cantidad_producto * 3.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pez globo || Su costo final de esta operacion es: " << preciofinalglobo << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalglobo);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+    }
+}
+//==================================================================================================================================================================================
+void carrito_dulces(int dulces, int cantidad_producto){ 
+    char decision;
+    char answer = 'A';
+    switch (dulces){
+        case 1:
+            float preciofinaloreo;
+            preciofinaloreo = cantidad_producto * 1.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Galleta Oreo || Su costo final de esta operacion es: " << preciofinaloreo << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinaloreo);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 2:
+            float preciofinalcaramelo;
+            preciofinalcaramelo = cantidad_producto * 0.10;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Caramelos de Limon || Su costo final de esta operacion es: " << preciofinalcaramelo << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcaramelo);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 3:
+            float preciofinalcoca;
+            preciofinalcoca = cantidad_producto * 2.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Coca Cola || Su costo final de esta operacion es: " << preciofinalcoca << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcoca);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 4:
+            float preciofinalfrunas;
+            preciofinalfrunas = cantidad_producto * 0.50;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Frunas || Su costo final de esta operacion es: " << preciofinalfrunas << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalfrunas);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 5:
+            float preciofinalmarga;
+            preciofinalmarga = cantidad_producto * 1.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Margaritas || Su costo final de esta operacion es: " << preciofinalmarga << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalmarga);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+    }
+}
+//==================================================================================================================================================================================
+void carrito_juguetes(int juguete, int cantidad_producto){ 
+    char decision;
+    char answer = 'A';
+    switch (juguete){
+        case 1:
+            float preciofinalmax;
+            preciofinalmax = cantidad_producto * 70.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Max Steal || Su costo final de esta operacion es: " << preciofinalmax << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalmax);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 2:
+            float preciofinalbar;
+            preciofinalbar = cantidad_producto * 75.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Barby || Su costo final de esta operacion es: " << preciofinalbar << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalbar);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 3:
+            float preciofinalcamion;
+            preciofinalcamion = cantidad_producto * 10.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Camion de carga || Su costo final de esta operacion es: " << preciofinalcamion << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalcamion);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 4:
+            float preciofinalpista;
+            preciofinalpista = cantidad_producto * 120.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Pista de carreras || Su costo final de esta operacion es: " << preciofinalpista << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalpista);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+        case 5:
+            float preciofinalajedrez;
+            preciofinalajedrez = cantidad_producto * 50.00;
+            cout << "Eligio la cantidad " << cantidad_producto << " de Ajedrez || Su costo final de esta operacion es: " << preciofinalajedrez << "s/.\n";
+            cout << "\nSe adjunta para la suma final";
+            do
+            {
+                cout << "\nDesea hacer otra operacion?(S/N): ";
+                cin >> decision;
+                if (decision == 'S')
+                {
+                    productos(answer);
+                }
+                else if(decision == 'N')
+                {
+                    cout<<"Pasa a caja final";
+                    caja_final(preciofinalajedrez);
+                }
+            } while ((decision != 'S') && (decision != 'N'));
+            break;
+    }
+}
+//==================================================================================================================================================================================
